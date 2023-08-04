@@ -1,17 +1,21 @@
 {
-  "name": "notifier-extension",
-  "version": "1.0.0",
-  "description": "Browser Extension for Github Notification",
-  "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/chrome": "^0.0.243",
-    "prettier": "^3.0.1",
-    "typescript": "^5.1.6"
-  }
+    "name": "notifier-extension",
+    "version": "1.0.0",
+    "description": "Browser Extension for Github Notification",
+    "scripts": {
+        "start": "web-ext run",
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/chrome": "^0.0.243",
+        "@types/webextension-polyfill": "^0.10.1",
+        "prettier": "^3.0.1",
+        "typescript": "^5.1.6",
+        "web-ext": "^7.6.2",
+        "webextension-polyfill": "^0.10.0"
+    }
 }
