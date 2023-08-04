@@ -1,0 +1,11 @@
+{
+  "manifest_version": 2,
+  "name": "Notifier",
+  "version": "1.0",
+
+  "description": "GitHub Notifier",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  }
+}
