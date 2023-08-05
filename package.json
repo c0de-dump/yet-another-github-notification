@@ -4,10 +4,10 @@
     "description": "Browser Extension for Github Notification",
     "scripts": {
         "start": "web-ext run",
-        "build": "npm run build:dev",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build:dev": "webpack --mode=development",
-        "build:prod": "webpack --mode=production --node-env=production"
+        "prebuild": "rm -rf dist",
+        "build": "tsc",
+        "postbuild": "rsync -zarv  --prune-empty-dirs --include '*/'  --include='*.html' --exclude='*' src dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
@@ -15,15 +15,9 @@
     "devDependencies": {
         "@types/chrome": "^0.0.243",
         "@types/webextension-polyfill": "^0.10.1",
-        "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.3",
         "prettier": "^3.0.1",
-        "style-loader": "^3.3.2",
-        "ts-loader": "^9.4.4",
         "typescript": "^5.1.6",
         "web-ext": "^7.6.2",
-        "webextension-polyfill": "^0.10.0",
-        "webpack": "^5.88.2",
-        "webpack-cli": "^5.1.4"
+        "webextension-polyfill": "^0.10.0"
     }
 }
