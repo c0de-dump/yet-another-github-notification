@@ -6,7 +6,7 @@
         "start": "web-ext run",
         "prebuild": "rm -rf dist",
         "build": "tsc",
-        "postbuild": "rsync -zarv  --prune-empty-dirs --include '*/'  --include='*.html' --exclude='*' src dist",
+        "postbuild": "rsync -zarvc --prune-empty-dirs --include '*/' --include='*.html' --exclude='*' 'src/' dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
