@@ -6,4 +6,5 @@ function saveOptions(e: SubmitEvent) {
     browser.storage.sync.set(Object.fromEntries(form.entries()))
 }
 
+console.log('loaded setting script')
 document.querySelector('form')?.addEventListener('submit', saveOptions)
