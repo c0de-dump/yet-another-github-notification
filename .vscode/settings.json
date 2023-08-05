@@ -3,11 +3,13 @@
     "editor.detectIndentation": false,
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "[json]": {
         "editor.tabSize": 2,
         "editor.quickSuggestions": {
             "strings": true
         },
         "editor.suggest.insertMode": "replace"
-    }
+    },
+    "[typescript]": {}
 }
