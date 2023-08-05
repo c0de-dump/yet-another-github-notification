@@ -4,6 +4,7 @@
     "description": "Browser Extension for Github Notification",
     "scripts": {
         "start": "web-ext run",
+        "start:dev": "web-ext run --verbose",
         "prebuild": "rm -rf dist",
         "build": "tsc",
         "postbuild": "rsync -zarvc --prune-empty-dirs --include '*/' --include='*.html' --exclude='*' 'src/' dist",
