@@ -9,7 +9,11 @@
         "48": "icons/border-48.png"
     },
     "background": {
-        "scripts": ["dist/background.js"],
+        "scripts": ["dist/background/index.js"],
         "persistent": false
+    },
+    "options_ui": {
+        "page": "dist/options.html",
+        "chrome_style": true
     }
 }
