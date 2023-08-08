@@ -6,6 +6,7 @@
     "icons": {
         "48": "icons/border-48.png"
     },
+    "permissions": ["storage"],
     "background": {
         "scripts": ["src/background.js"],
         "persistent": false
