@@ -5,20 +5,13 @@
     "scripts": {
         "start": "web-ext run",
         "start:dev": "web-ext run --verbose",
-        "prebuild": "rm -rf dist",
-        "build": "tsc",
-        "postbuild": "rsync -zarvc --prune-empty-dirs --include '*/' --include='*.html' --exclude='*' 'src/' dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@types/chrome": "^0.0.243",
-        "@types/webextension-polyfill": "^0.10.1",
         "prettier": "^3.0.1",
-        "typescript": "^5.1.6",
-        "web-ext": "^7.6.2",
-        "webextension-polyfill": "^0.10.0"
+        "web-ext": "^7.6.2"
     }
 }

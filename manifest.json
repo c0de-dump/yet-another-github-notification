@@ -2,18 +2,16 @@
     "manifest_version": 2,
     "name": "Notifier",
     "version": "1.0",
-
     "description": "GitHub Notifier",
-
-    "permission": ["storage", "notifications"],
     "icons": {
         "48": "icons/border-48.png"
     },
     "background": {
-        "scripts": ["browser-polyfill.js", "dist/background/index.js"],
+        "scripts": ["src/background.js"],
         "persistent": false
     },
+    "optional_permissions": ["*://*/"],
     "options_ui": {
-        "page": "dist/setting"
+        "page": "src/setting.html"
     }
 }
