@@ -11,5 +11,9 @@
         },
         "editor.suggest.insertMode": "replace"
     },
-    "[typescript]": {}
+    "javascript.validate.enable": false,
+    "[javascript]": {
+        "editor.maxTokenizationLineLength": 2500,
+        "typescript.suggest.enabled": false
+    }
 }
