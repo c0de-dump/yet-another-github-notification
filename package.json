@@ -4,7 +4,7 @@
     "description": "Browser Extension for Github Notification",
     "scripts": {
         "start": "web-ext run",
-        "start:dev": "web-ext run --verbose",
+        "start:dev": "web-ext run --verbose --devtools",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],

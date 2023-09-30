@@ -1,20 +1,12 @@
-function saveOptions(e) {
-    console.log('saveOptions')
-    const form = new FormData(e.target)
-    browser.storage.sync.set(Object.fromEntries(form.entries()))
-    const node = document.querySelector('#id')
-    node.textContent = JSON.stringify(form.entries())
-    console.log(form.entries())
-    e.preventDefault()
-}
+// Description: setting page
+document.addEventListener('DOMContentLoaded', async () => {
+    const form = document.querySelector('#setting-form')
 
-function restoreOptions() {
-    let storageItem = browser.storage.sync.get('token')
-    storageItem.then((res) => {
-        document.querySelector('#redirect-url').innerText = res.token
-    })
-}
-
-console.log(document)
-document.addEventListener('DOMContentLoaded', restoreOptions)
-document.querySelector('form').addEventListener('submit', saveOptions)
+    for (const elem of form?.querySelectorAll('[name]')) {
+        data = await browser.storage.sync.get(elem.id)
+        elem.value = data[elem.id]
+        elem.addEventListener('change', async (evt) => {
+            browser.storage.sync.set({ [elem.id]: evt.target.value })
+        })
+    }
+})
