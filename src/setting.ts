@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-
+alert('content script loaded')
 // Description: setting page
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('#setting-form')
@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         elem.addEventListener('change', async (evt) => {
             const target = evt?.target as HTMLInputElement
+            alert('Update storage' + elem.id + target.value)
             await browser.storage.sync.set({ [elem.id]: target.value })
         })
     }
