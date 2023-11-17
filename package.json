@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "Browser Extension for Github Notification",
     "scripts": {
+        "build": "tsc",
+        "postbuild": "find src -type f -name '*.html' -o -name '*.css' -exec cp {} dist \\;",
+        "prestart": "npm run build",
+        "prestart:dev": "npm run build",
         "start": "web-ext run",
         "start:dev": "web-ext run --verbose --devtools"
     },
@@ -13,7 +17,9 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
+        "@types/webextension-polyfill": "^0.10.6",
         "prettier": "^3.0.1",
+        "typescript": "^5.2.2",
         "web-ext": "^7.6.2",
         "webextension-polyfill": "^0.10.0"
     }
