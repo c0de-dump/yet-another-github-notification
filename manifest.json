@@ -8,14 +8,18 @@
     },
     "host_permissions": ["*://api.github.com/*"],
     "permissions": ["alarms", "storage"],
-    "background": {
-        "scripts": ["src/background.js"]
-    },
     "browser_specific_settings": {
         "gecko": {
             "id": "github-notifier-gecko@addon",
             "strict_min_version": "60.0"
         }
     },
+    "content_scripts": [
+        {
+            "matches": ["https://*/*"],
+            "js": ["browser-polyfill.js"],
+            "run_at": "document_end"
+        }
+    ],
     "options_ui": { "page": "src/setting.html" }
 }
