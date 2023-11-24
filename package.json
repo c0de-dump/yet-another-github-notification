@@ -1,26 +1,35 @@
 {
-    "name": "notifier-extension",
-    "version": "1.0.0",
-    "description": "Browser Extension for Github Notification",
-    "scripts": {
-        "build": "tsc",
-        "postbuild": "find src -type f -name '*.html' -o -name '*.css' -exec cp {} dist \\;",
-        "prestart": "npm run build",
-        "prestart:dev": "npm run build",
-        "start": "web-ext run",
-        "start:dev": "web-ext run --verbose --devtools"
-    },
-    "keywords": [
-        "Github",
-        "Notification"
-    ],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/webextension-polyfill": "^0.10.6",
-        "prettier": "^3.0.1",
-        "typescript": "^5.2.2",
-        "web-ext": "^7.6.2",
-        "webextension-polyfill": "^0.10.0"
-    }
+  "name": "my-webpack-project",
+  "version": "1.0.0",
+  "description": "My webpack project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "prestart": "npm run build",
+    "prestart:dev": "npm run build",
+    "start": "web-ext run",
+    "start:dev": "web-ext run --verbose --devtools",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
+  },
+  "keywords": [
+    "Github",
+    "Notification"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@types/webextension-polyfill": "^0.10.6",
+    "@webpack-cli/generators": "^3.0.7",
+    "babel-loader": "^9.1.3",
+    "prettier": "^3.0.1",
+    "typescript": "^5.2.2",
+    "web-ext": "^7.6.2",
+    "webextension-polyfill": "^0.10.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
 }

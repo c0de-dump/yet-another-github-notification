@@ -22,7 +22,7 @@
     ],
     "options_ui": { "page": "dist/setting.html" },
     "background": {
-        "scripts": ["dist/background.js"],
+        "scripts": ["browser-polyfill.js", "dist/background.js"],
         "persistent": false,
         "type": "module"
     }
