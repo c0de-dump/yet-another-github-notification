@@ -1,6 +1,18 @@
 import browser from 'webextension-polyfill'
 
-alert('background script loaded')
+console.log('background script loaded')
 browser.storage.sync.onChanged.addListener((changes: any) => {
-    alert(`storage changed:  ${JSON.stringify(changes)}`)
+    console.log('storage changed', changes)
+})
+
+browser.runtime.onStartup.addListener(() => {
+    console.log('runtime started')
+})
+browser.runtime.onInstalled.addListener(() => {
+    console.log('runtime installed')
+    browser.tabs.create({ url: 'http://google.com' })
+})
+
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log({ sender, sendResponse, message })
 })
