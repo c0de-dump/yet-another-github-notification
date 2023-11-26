@@ -1,18 +1,33 @@
 import browser from 'webextension-polyfill'
+import { ListNotifications } from './github'
 
-console.log('background script loaded')
-browser.storage.sync.onChanged.addListener((changes: any) => {
-    console.log('storage changed', changes)
+async function _checkNotifications() {
+    const storage = await browser.storage.sync.get()
+    const token = storage['token']
+    if (!token) {
+        console.debug('empty token from storage')
+        return
+    }
+    const notifications = await ListNotifications(token, { all: true })
+    console.log({ notifications })
+}
+
+browser.storage.onChanged.addListener(() => {
+    console.log('storage changed')
+    setTimeout(() => {
+        _checkNotifications()
+    }, 0)
 })
-
 browser.runtime.onStartup.addListener(() => {
     console.log('runtime started')
-})
-browser.runtime.onInstalled.addListener(() => {
-    console.log('runtime installed')
-    browser.tabs.create({ url: 'http://google.com' })
+    setTimeout(() => {
+        _checkNotifications()
+    }, 0)
 })
 
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log({ sender, sendResponse, message })
+browser.runtime.onInstalled.addListener(() => {
+    console.log('runtime installed')
+    setTimeout(() => {
+        _checkNotifications()
+    }, 0)
 })

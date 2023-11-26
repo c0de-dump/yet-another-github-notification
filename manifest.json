@@ -6,7 +6,7 @@
     "icons": {
         "48": "icons/border-48.png"
     },
-    "permissions": ["alarms", "storage", "webRequest"],
+    "permissions": ["storage", "webRequest", "notifications"],
     "browser_specific_settings": {
         "gecko": {
             "id": "github-notifier-gecko@addon",

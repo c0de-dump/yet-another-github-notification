@@ -51,6 +51,7 @@ const config = {
         extensions: ['.js', '.ts'],
         alias: {
             'webextension-polyfill-ts': path.resolve(__dirname, 'node_modules', 'webextension-polyfill-ts'),
+            '@types': path.resolve(__dirname, 'src', 'types'),
         },
     },
 }

@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-alert('content script loaded')
+
 // Description: setting page
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.querySelector('#setting-form')

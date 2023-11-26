@@ -26,7 +26,10 @@
         "noUnusedParameters": true /* Raise an error when a function parameter isn't read. */,
         "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
         "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-        "noEmit": true /* Disable emitting files from a compilation. */
+        "noEmit": true /* Disable emitting files from a compilation. */,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]
