@@ -1,21 +1,29 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
     "name": "Notifier",
     "version": "1.0",
     "description": "GitHub Notifier",
     "icons": {
         "48": "icons/border-48.png"
     },
-    "host_permissions": ["*://api.github.com/*"],
-    "permissions": ["alarms", "storage"],
-    "background": {
-        "scripts": ["src/background.js"]
-    },
+    "permissions": ["storage", "webRequest", "notifications"],
     "browser_specific_settings": {
         "gecko": {
             "id": "github-notifier-gecko@addon",
             "strict_min_version": "60.0"
         }
     },
-    "options_ui": { "page": "src/setting.html" }
+    "content_scripts": [
+        {
+            "matches": ["https://*/*"],
+            "js": ["browser-polyfill.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "options_ui": { "page": "dist/setting.html" },
+    "background": {
+        "scripts": ["dist/background.js"],
+        "persistent": false,
+        "type": "module"
+    }
 }

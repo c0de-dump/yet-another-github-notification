@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "name": "[FF] Launch add-on",
+            "addonPath": "${workspaceFolder}",
+            "reloadOnChange": {
+                "watch": "${workspaceFolder}/dist/*.js",
+                "ignore": "**/node_modules/**"
+            },
+            "showConsoleCallLocation": true,
+            "log": {
+                "fileName": "${workspaceFolder}/dev/vscode-firefox-debug.log",
+                "fileLevel": {
+                    "default": "Debug"
+                },
+                "consoleLevel": {
+                    "default": "Debug"
+                }
+            }
+        }
+    ]
+}
