@@ -20,7 +20,11 @@ function _createHeaders(token: string) {
 
 async function ListNotifications(token: string, params: Partial<ListNotificationsParams>): Promise<Notification[]> {
     const headers = _createHeaders(token)
-    return await get(`${BASE_URL}/notifications`, params, { headers })
+    const queryParams = { ...params, all: false }
+    if (queryParams.per_page && queryParams.per_page > 50) {
+        queryParams.per_page = 50
+    }
+    return await get(`${BASE_URL}/notifications`, queryParams, { headers })
 }
 
 export { ListNotifications }
