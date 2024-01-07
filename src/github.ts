@@ -18,7 +18,7 @@ function _createHeaders(token: string) {
     return result
 }
 
-async function ListNotifications(token: string, params: Partial<ListNotificationsParams>): Promise<Notification[]> {
+async function ListNotifications(token: string, params: Partial<ListNotificationsParams> = {}): Promise<Notification[]> {
     const headers = _createHeaders(token)
     const queryParams = { ...params, all: false }
     if (queryParams.per_page && queryParams.per_page > 50) {
