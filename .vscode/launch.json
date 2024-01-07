@@ -10,6 +10,7 @@
                 "watch": "${workspaceFolder}/dist/*.js",
                 "ignore": "**/node_modules/**"
             },
+            "preLaunchTask": "npm: build:dev",
             "showConsoleCallLocation": true,
             "log": {
                 "fileName": "${workspaceFolder}/dev/vscode-firefox-debug.log",
