@@ -8,7 +8,8 @@ let timer: NodeJS.Timer
 
 async function _createNotification(notification: GitHubNotification) {
     console.log('create notification: ', notification)
-    await browser.notifications.create(notification.subscription_url, {
+    const url = notification.subject.url.replace('https://api.github.com/repos/', 'https://github.com/')
+    await browser.notifications.create(url, {
         type: 'basic',
         title: notification.subject.title,
         message: notification.repository.full_name,
