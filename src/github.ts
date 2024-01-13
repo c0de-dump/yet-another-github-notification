@@ -1,5 +1,5 @@
 import { get } from './request'
-import type { ListNotificationsParams, Notification } from '@/types/github'
+import type { ListNotificationParams, GitHubNotification } from '@schema'
 
 const BASE_URL = 'https://api.github.com'
 
@@ -18,7 +18,7 @@ function _createHeaders(token: string) {
     return result
 }
 
-async function listNotifications(token: string, params: Partial<ListNotificationsParams> = {}): Promise<Notification[]> {
+async function listNotifications(token: string, params?: ListNotificationParams): Promise<GitHubNotification[]> {
     try {
         const headers = _createHeaders(token)
         const queryParams = { ...params, all: false }

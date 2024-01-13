@@ -1,12 +1,12 @@
 import browser from 'webextension-polyfill'
-import type { Notification } from '@/types/github'
+import type { GitHubNotification } from '@schema'
 import { listNotifications } from './github'
 
 const second = 1000
 const _interval = 10 * second
 let timer: NodeJS.Timer
 
-async function _createNotification(notification: Notification) {
+async function _createNotification(notification: GitHubNotification) {
     console.log('create notification: ', notification)
     await browser.notifications.create(notification.subscription_url, {
         type: 'basic',
@@ -16,11 +16,11 @@ async function _createNotification(notification: Notification) {
     })
 }
 
-async function _storeNotification(notification: Notification) {
+async function _storeNotification(notification: GitHubNotification) {
     await browser.storage.local.set({ [notification.id]: notification })
 }
 
-async function _newNotification(notification: Notification): Promise<boolean> {
+async function _newNotification(notification: GitHubNotification): Promise<boolean> {
     const notifs = await browser.storage.local.get(notification.id)
     const notif = notifs[notification.id]
     return notif === undefined || notif.updated_at !== notification.updated_at

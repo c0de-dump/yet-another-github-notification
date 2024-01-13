@@ -28,7 +28,7 @@
         "skipLibCheck": true /* Skip type checking all .d.ts files. */,
         "noEmit": true /* Disable emitting files from a compilation. */,
         "paths": {
-            "@/*": ["./src/*"]
+            "@schema": ["./src/types/index.ts"]
         }
     },
     "include": ["src/**/*"],
