@@ -36,7 +36,6 @@ async function _checkNotifications() {
     }
     const notifications = await listNotifications(token)
     // notifications is not an array when token is invalid
-    if (!Array.isArray(notifications)) return
     for (const notification of notifications) {
         console.log('check notification: ', notification)
         if (await _newNotification(notification)) {

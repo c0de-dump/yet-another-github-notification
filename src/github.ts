@@ -27,7 +27,8 @@ async function listNotifications(token: string, params?: ListNotificationParams)
         }
         return await get(`${BASE_URL}/notifications`, queryParams, { headers })
     } catch (error) {
-        console.error('failed to list notifications: ', error)
+        const msg = error instanceof Error ? error?.message : `unknown type <${typeof error}>`
+        console.error('listNotifications error:', msg)
         return []
     }
 }
