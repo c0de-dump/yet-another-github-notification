@@ -4,7 +4,6 @@ import { listNotifications } from './github'
 
 const second = 1000
 const _interval = 10 * second
-let timer: NodeJS.Timer
 
 async function _createNotification(notification: GitHubNotification) {
     console.log('create notification: ', notification)
@@ -28,20 +27,16 @@ async function _newNotification(notification: GitHubNotification): Promise<boole
 }
 
 async function _checkNotifications() {
-    const storage = await browser.storage.sync.get()
-    const token = storage['token']
-    if (!token) {
-        console.debug('empty token from storage')
-        return
-    }
-    const notifications = await listNotifications(token)
-    // notifications is not an array when token is invalid
-    for (const notification of notifications) {
-        console.log('check notification: ', notification)
-        if (await _newNotification(notification)) {
+    try {
+        const notifications = await listNotifications()
+        for (const notification of notifications) {
+            const newNotif = await _newNotification(notification)
+            if (!newNotif) continue
             await _createNotification(notification)
             await _storeNotification(notification)
         }
+    } catch (error) {
+        console.error('failed to list notifications: ', error)
     }
 }
 
@@ -50,14 +45,10 @@ browser.notifications.onClicked.addListener(async (id) => {
     await browser.tabs.create({ url: id })
 })
 
-browser.runtime.onStartup.addListener(() => {
-    console.log('runtime started')
-    clearInterval(timer)
-    timer = setInterval(_checkNotifications, _interval)
-})
+// browser.runtime.onStartup.addListener(() => {
+//     console.log('runtime started')
+//     clearInterval(timer)
+//     timer = setInterval(_checkNotifications, _interval)
+// })
 
-browser.runtime.onInstalled.addListener((details) => {
-    console.log('runtime installed: ', JSON.stringify(details, null, 2))
-    clearInterval(timer)
-    timer = setInterval(_checkNotifications, _interval)
-})
+browser.runtime.onInstalled.addListener(() => setInterval(_checkNotifications, _interval))

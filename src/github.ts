@@ -1,7 +1,21 @@
 import { get } from './request'
+import browser from 'webextension-polyfill'
 import type { ListNotificationParams, GitHubNotification } from '@schema'
 
 const BASE_URL = 'https://api.github.com'
+
+async function _getToken() {
+    const storage = await browser.storage.sync.get()
+    const token = storage['token']
+    if (!token) {
+        throw new Error('empty token from storage')
+    }
+    return token
+}
+
+async function _clearToken() {
+    await browser.storage.sync.remove('token')
+}
 
 function _createHeaders(token: string) {
     const headers = new Headers()
@@ -18,7 +32,12 @@ function _createHeaders(token: string) {
     return result
 }
 
-async function listNotifications(token: string, params?: ListNotificationParams): Promise<GitHubNotification[]> {
+async function listNotifications(params?: ListNotificationParams): Promise<GitHubNotification[]> {
+    const token = await _getToken()
+    if (!token) {
+        console.error('empty token')
+        return []
+    }
     try {
         const headers = _createHeaders(token)
         const queryParams = { ...params, all: false }
@@ -28,9 +47,25 @@ async function listNotifications(token: string, params?: ListNotificationParams)
         return await get(`${BASE_URL}/notifications`, queryParams, { headers })
     } catch (error) {
         const msg = error instanceof Error ? error?.message : `unknown type <${typeof error}>`
-        console.error('listNotifications error:', msg)
-        return []
+        await _clearToken()
+        throw new Error(msg)
     }
 }
 
-export { listNotifications }
+async function markThreadAsRead(id: string): Promise<void> {
+    const token = await _getToken()
+    if (!token) {
+        console.error('empty token')
+        return
+    }
+    try {
+        const headers = _createHeaders(token)
+        await get(`${BASE_URL}/notifications/threads/${id}`, {}, { headers })
+    } catch (error) {
+        const msg = error instanceof Error ? error?.message : `unknown type <${typeof error}>`
+        await _clearToken()
+        throw new Error(msg)
+    }
+}
+
+export { listNotifications, markThreadAsRead }

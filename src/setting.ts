@@ -1,11 +1,9 @@
 import browser from 'webextension-polyfill'
 
-// Description: setting page
-document.addEventListener('DOMContentLoaded', async () => {
-    const form = document.querySelector('#setting-form')
+async function _listenToInput() {
+    const form = document.querySelector('#setting-form') as HTMLFormElement
 
     if (!form) return
-
     for (const element of form.querySelectorAll('[name]')) {
         const elem = element as HTMLInputElement
         const data = await browser.storage.sync.get(elem.id)
@@ -19,4 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await browser.storage.sync.set({ [elem.id]: target.value })
         })
     }
-})
+}
+
+// Description: setting page
+document.addEventListener('DOMContentLoaded', _listenToInput)

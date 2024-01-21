@@ -15,17 +15,15 @@ const _request = async <T>(url: string, params: Record<string, unknown>, options
             ...options?.headers,
         },
     })
-    let data
-    try {
-        data = await res.json()
-    } catch (error) {
-        console.error(`failed to parse response from ${url}: `, error)
-        throw new Error(`failed to parse response from ${url}`)
-    }
     if (!res.ok) {
-        throw new Error(`request failed with status code ${res.status}: ${data?.message}`)
+        throw new Error(`request failed with status code ${res.status}`)
     }
-    return data as T
+    try {
+        return await res.json()
+    } catch (error) {
+        const err = error as Error
+        throw new Error(`failed to parse response from ${url}: ${err.message}`)
+    }
 }
 
 const get = <T>(url: string, params: Record<string, unknown>, options: RequestInit = {}): Promise<T> => {
