@@ -6,7 +6,6 @@ interface CustomDebugger extends D.Debugger {
 }
 
 function override() {
-    // @ts-expect-error - unknown type for `this`
     const self = this
     self.log = console.log.bind(console, self.namespace)
     self.error = console.error.bind(console, self.namespace)
@@ -21,7 +20,6 @@ function override() {
 }
 
 function _init(namespace: string): CustomDebugger {
-    // @ts-expect-error - unknown type for `this`
     const self = this as CustomDebugger
     if (self) return self.extend(namespace)
 
