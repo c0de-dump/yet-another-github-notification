@@ -1,12 +1,14 @@
 import browser from 'webextension-polyfill'
 import type { GitHubNotification } from '@schema'
 import { listNotifications } from './github'
+import debug from './debug'
+const logger = debug.extend('background')
 
 const second = 1000
 const _interval = 10 * second
 
 async function _createNotification(notification: GitHubNotification) {
-    console.log('create notification: ', notification)
+    logger.log('create notification: ', notification)
     const url = notification.subject.url.replace('https://api.github.com/repos/', 'https://github.com/')
     await browser.notifications.create(url, {
         type: 'basic',
@@ -36,7 +38,7 @@ async function _checkNotifications() {
             await _storeNotification(notification)
         }
     } catch (error) {
-        console.error('failed to list notifications: ', error)
+        logger.error('failed to list notifications: ', (error as Error).message)
     }
 }
 

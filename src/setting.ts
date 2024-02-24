@@ -1,4 +1,6 @@
 import browser from 'webextension-polyfill'
+import debug from './debug'
+const logger = debug.extend('setting')
 
 async function _listenToInput() {
     const form = document.querySelector('#setting-form') as HTMLFormElement
@@ -10,10 +12,10 @@ async function _listenToInput() {
         if (data[elem.id] !== undefined) {
             elem.value = data[elem.id]
         }
-        console.log('Adding listenser to elem: ', elem.id)
+        logger.log('Adding listenser to elem: ', elem.id)
         elem.addEventListener('change', async (evt) => {
             const target = evt?.target as HTMLInputElement
-            console.log('Update storage', elem.id, target.value)
+            logger.log('Update storage', elem.id, target.value)
             await browser.storage.sync.set({ [elem.id]: target.value })
         })
     }

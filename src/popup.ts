@@ -1,6 +1,8 @@
 import { GitHubNotification } from '@schema'
 import browser from 'webextension-polyfill'
 import { markThreadAsRead } from './github'
+import debug from './debug'
+const logger = debug.extend('popup')
 
 const _typeMaps: Record<string, string> = {
     issue: '🧐',
@@ -22,7 +24,7 @@ function _renderNotificationHTML(notification: GitHubNotification) {
     const type = notification.subject.type.toLowerCase()
     let icon = _typeMaps[type]
     if (!icon) {
-        console.error('unknown type: ', type)
+        logger.log('unknown type: ', type)
         icon = _typeMaps['unknown']
     }
 
@@ -30,9 +32,9 @@ function _renderNotificationHTML(notification: GitHubNotification) {
 }
 
 browser.storage.local.onChanged.addListener(async (changes) => {
-    console.log('storage changed: ', changes)
+    logger.log('storage changed: ', changes)
     for (const key in changes) {
-        console.log('key: ', key)
+        logger.log('key: ', key)
     }
 })
 
@@ -44,7 +46,7 @@ browser.storage.local.get().then((data) => {
         elem.innerHTML = _renderNotificationHTML(notification)
         elem.onclick = () => {
             browser.notifications.clear(notification.subject.url)
-            browser.tabs.create({ url: notification.subject.url })
+            browser.tabs.create({ url: notification.repository.html_url })
             browser.storage.local.remove(notification.id)
             markThreadAsRead(notification.id)
             div.removeChild(elem)
