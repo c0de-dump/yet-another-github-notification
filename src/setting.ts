@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill'
-import debug from './debug'
+
+import debug from '@utils/debug'
 const logger = debug.extend('setting')
 
 async function _listenToInput() {

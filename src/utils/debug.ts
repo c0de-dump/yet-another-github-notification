@@ -1,3 +1,8 @@
+/**
+ * Custom debugger.
+ *
+ * This is an evil hack to extend the original debugger with error method.
+ */
 import D from 'debug'
 
 interface CustomDebugger extends D.Debugger {
@@ -6,7 +11,8 @@ interface CustomDebugger extends D.Debugger {
 }
 
 function override() {
-    const self = this
+    // @ts-expect-error: unknown type of this
+    const self = this as CustomDebugger
     self.log = console.log.bind(console, self.namespace)
     self.error = console.error.bind(console, self.namespace)
     const _extend = self.extend
@@ -20,6 +26,7 @@ function override() {
 }
 
 function _init(namespace: string): CustomDebugger {
+    // @ts-expect-error: unknown type of this
     const self = this as CustomDebugger
     if (self) return self.extend(namespace)
 

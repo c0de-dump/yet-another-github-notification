@@ -1,7 +1,8 @@
 import browser from 'webextension-polyfill'
+
 import type { GitHubNotification } from '@schema'
-import { listNotifications } from './github'
-import debug from './debug'
+import { listNotifications } from '@utils/github'
+import debug from '@utils/debug'
 const logger = debug.extend('background')
 
 const second = 1000

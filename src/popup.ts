@@ -1,7 +1,8 @@
-import { GitHubNotification } from '@schema'
 import browser from 'webextension-polyfill'
-import { markThreadAsRead } from './github'
-import debug from './debug'
+
+import { GitHubNotification } from '@schema'
+import { markThreadAsRead } from '@utils/github'
+import debug from '@utils/debug'
 const logger = debug.extend('popup')
 
 const _typeMaps: Record<string, string> = {

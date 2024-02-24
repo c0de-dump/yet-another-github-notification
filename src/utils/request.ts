@@ -1,4 +1,4 @@
-import debug from './debug'
+import debug from '@utils/debug'
 const logger = debug.extend('request')
 
 const formatParams = (params: Record<string, unknown>): string => {
