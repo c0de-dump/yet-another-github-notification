@@ -1,14 +1,16 @@
 import browser from 'webextension-polyfill'
-import type { Notification } from '@/types/github'
+import type { GitHubNotification } from '@schema'
 import { listNotifications } from './github'
+import debug from './debug'
+const logger = debug.extend('background')
 
 const second = 1000
 const _interval = 10 * second
-let timer: NodeJS.Timer
 
-async function _createNotification(notification: Notification) {
-    console.log('create notification: ', notification)
-    await browser.notifications.create(notification.subscription_url, {
+async function _createNotification(notification: GitHubNotification) {
+    logger.log('create notification: ', notification)
+    const url = notification.subject.url.replace('https://api.github.com/repos/', 'https://github.com/')
+    await browser.notifications.create(url, {
         type: 'basic',
         title: notification.subject.title,
         message: notification.repository.full_name,
@@ -16,32 +18,27 @@ async function _createNotification(notification: Notification) {
     })
 }
 
-async function _storeNotification(notification: Notification) {
+async function _storeNotification(notification: GitHubNotification) {
     await browser.storage.local.set({ [notification.id]: notification })
 }
 
-async function _newNotification(notification: Notification): Promise<boolean> {
+async function _newNotification(notification: GitHubNotification): Promise<boolean> {
     const notifs = await browser.storage.local.get(notification.id)
     const notif = notifs[notification.id]
     return notif === undefined || notif.updated_at !== notification.updated_at
 }
 
 async function _checkNotifications() {
-    const storage = await browser.storage.sync.get()
-    const token = storage['token']
-    if (!token) {
-        console.debug('empty token from storage')
-        return
-    }
-    const notifications = await listNotifications(token)
-    // notifications is not an array when token is invalid
-    if (!Array.isArray(notifications)) return
-    for (const notification of notifications) {
-        console.log('check notification: ', notification)
-        if (await _newNotification(notification)) {
+    try {
+        const notifications = await listNotifications()
+        for (const notification of notifications) {
+            const newNotif = await _newNotification(notification)
+            if (!newNotif) continue
             await _createNotification(notification)
             await _storeNotification(notification)
         }
+    } catch (error) {
+        logger.error('failed to list notifications: ', (error as Error).message)
     }
 }
 
@@ -50,14 +47,10 @@ browser.notifications.onClicked.addListener(async (id) => {
     await browser.tabs.create({ url: id })
 })
 
-browser.runtime.onStartup.addListener(() => {
-    console.log('runtime started')
-    clearInterval(timer)
-    timer = setInterval(_checkNotifications, _interval)
-})
+// browser.runtime.onStartup.addListener(() => {
+//     console.log('runtime started')
+//     clearInterval(timer)
+//     timer = setInterval(_checkNotifications, _interval)
+// })
 
-browser.runtime.onInstalled.addListener((details) => {
-    console.log('runtime installed: ', JSON.stringify(details, null, 2))
-    clearInterval(timer)
-    timer = setInterval(_checkNotifications, _interval)
-})
+browser.runtime.onInstalled.addListener(() => setInterval(_checkNotifications, _interval))

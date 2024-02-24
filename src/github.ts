@@ -1,9 +1,25 @@
+import browser from 'webextension-polyfill'
+import type { ListNotificationParams, GitHubNotification } from '@schema'
 import { get } from './request'
-import type { ListNotificationsParams, Notification } from '@/types/github'
+import debug from './debug'
+const logger = debug.extend('github')
 
 const BASE_URL = 'https://api.github.com'
 
-function _createHeaders(token: string) {
+async function _getToken() {
+    const storage = await browser.storage.sync.get()
+    const token = storage['token']
+    if (!token) {
+        throw new Error('empty token from storage')
+    }
+    return token
+}
+
+async function _clearToken() {
+    await browser.storage.sync.remove('token')
+}
+
+function _createHeaders(token: string): Record<string, string> {
     const headers = new Headers()
     headers.append('Accept', 'application/vnd.github+json')
     headers.append('X-GitHub-Api-Version', '2022-11-28')
@@ -13,13 +29,15 @@ function _createHeaders(token: string) {
     // so we need to convert it to a plain object
     const result = {} as Record<string, string>
     for (const [key, value] of headers.entries()) {
+        logger.log('header: ', key, value)
         result[key] = value
     }
     return result
 }
 
-async function listNotifications(token: string, params: Partial<ListNotificationsParams> = {}): Promise<Notification[]> {
+async function listNotifications(params?: ListNotificationParams): Promise<GitHubNotification[]> {
     try {
+        const token = await _getToken()
         const headers = _createHeaders(token)
         const queryParams = { ...params, all: false }
         if (queryParams.per_page && queryParams.per_page > 50) {
@@ -27,9 +45,22 @@ async function listNotifications(token: string, params: Partial<ListNotification
         }
         return await get(`${BASE_URL}/notifications`, queryParams, { headers })
     } catch (error) {
-        console.error('failed to list notifications: ', error)
-        return []
+        const msg = error instanceof Error ? error?.message : `unknown type <${typeof error}>`
+        await _clearToken()
+        throw new Error(msg)
     }
 }
 
-export { listNotifications }
+async function markThreadAsRead(id: string): Promise<void> {
+    try {
+        const token = await _getToken()
+        const headers = _createHeaders(token)
+        await get(`${BASE_URL}/notifications/threads/${id}`, {}, { headers })
+    } catch (error) {
+        const msg = error instanceof Error ? error?.message : `unknown type <${typeof error}>`
+        await _clearToken()
+        throw new Error(msg)
+    }
+}
+
+export { listNotifications, markThreadAsRead }

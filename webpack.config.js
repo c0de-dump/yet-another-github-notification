@@ -7,6 +7,7 @@ const config = {
     entry: {
         background: path.resolve(__dirname, 'src/background.ts'),
         setting: path.resolve(__dirname, 'src/setting.ts'),
+        popup: path.resolve(__dirname, 'src/popup.ts'),
     },
     devtool: 'source-map',
     output: {
