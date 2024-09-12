@@ -1,8 +1,7 @@
 import browser from 'webextension-polyfill'
+
 import type { ListNotificationParams, GitHubNotification } from '@schema'
-import { get } from './request'
-import debug from './debug'
-const logger = debug.extend('github')
+import { get } from '@utils/request'
 
 const BASE_URL = 'https://api.github.com'
 
@@ -29,7 +28,6 @@ function _createHeaders(token: string): Record<string, string> {
     // so we need to convert it to a plain object
     const result = {} as Record<string, string>
     for (const [key, value] of headers.entries()) {
-        logger.log('header: ', key, value)
         result[key] = value
     }
     return result
